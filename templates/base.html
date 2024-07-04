@@ -1,0 +1,39 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kino Sayti</title>
+    <link rel="stylesheet" href="{% static "css/styles.css" %}">
+    <link rel="stylesheet" href="{% static "css/plyr.css" %}">
+    <link rel="stylesheet" href="https://cdn.plyr.io/3.6.12/plyr.css" />
+</head>
+<body>
+    {% block content %}
+    <div class="container">
+        <h1>Movies</h1>
+        {% for movie in movies %}
+        <div class="movie">
+            <h2>{{ movie.title }}</h2>
+            <video controls class="js-player">
+                <source src="{{ movie.movie_file.url }}" type="video/mp4">
+                Sizning brauzeringiz video teglari qo'llab-quvvatlamaydi.
+            </video>
+            <div class="movie-details">
+                <p><strong>Genre:</strong> {{ movie.genre }}</p>
+                <p><strong>Release Year:</strong> {{ movie.release_year }}</p>
+                <p><strong>Size:</strong> {{ movie.size }}</p>
+                <p><strong>Code:</strong> {{ movie.code }}</p>
+                <a href="{{ movie.movie_file.url }}" download>Download Movie</a>
+            </div>
+        </div>
+        {% endfor %}
+      </div>
+    {% endblock %}
+    <script src="{% static "js/plyr.js" %}"></script>
+    <script src="{% static "js/scripts.js" %}"></script>
+    <script src="https://cdn.plyr.io/3.6.12/plyr.polyfilled.js"></script>
+</body>
+</html>
