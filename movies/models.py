@@ -1,13 +1,13 @@
-from django.contrib.postgres.indexes import GinIndex
-from django.contrib.postgres.search import TrigramSimilarity
+# models.py
+
 from django.db import models
+from django.contrib.postgres.indexes import GinIndex
 
 class Category(models.Model):
     title = models.CharField(max_length=100)
 
     def __str__(self):
         return self.title
-
 
 class Movie(models.Model):
     title = models.CharField(max_length=255)
@@ -22,16 +22,33 @@ class Movie(models.Model):
 
     class Meta:
         indexes = [
-            GinIndex(fields=['title', 'genre', 'language', 'country', 'quality', 'code']),
+            GinIndex(fields=['title'], name='title_gin_trgm_idx', opclasses=['gin_trgm_ops']),
+            GinIndex(fields=['genre'], name='genre_gin_trgm_idx', opclasses=['gin_trgm_ops']),
+            GinIndex(fields=['language'], name='language_gin_trgm_idx', opclasses=['gin_trgm_ops']),
+            GinIndex(fields=['country'], name='country_gin_trgm_idx', opclasses=['gin_trgm_ops']),
+            GinIndex(fields=['quality'], name='quality_gin_trgm_idx', opclasses=['gin_trgm_ops']),
+            GinIndex(fields=['code'], name='code_gin_trgm_idx', opclasses=['gin_trgm_ops']),
         ]
 
     def __str__(self):
         return self.title
 
-    def get_similarity(self, query):
-        return TrigramSimilarity(self.title, query) + \
-               TrigramSimilarity(self.genre, query) + \
-               TrigramSimilarity(self.language, query) + \
-               TrigramSimilarity(self.country, query) + \
-               TrigramSimilarity(self.quality, query) + \
-               TrigramSimilarity(self.code, query)
+    @staticmethod
+    def search(query):
+        from django.contrib.postgres.search import TrigramSimilarity
+        from django.db.models import Q
+        return Movie.objects.annotate(
+            similarity_title=TrigramSimilarity('title', query),
+            similarity_genre=TrigramSimilarity('genre', query),
+            similarity_language=TrigramSimilarity('language', query),
+            similarity_country=TrigramSimilarity('country', query),
+            similarity_quality=TrigramSimilarity('quality', query),
+            similarity_code=TrigramSimilarity('code', query),
+        ).filter(
+            Q(similarity_title__gt=0.1) | Q(similarity_genre__gt=0.1) |
+            Q(similarity_language__gt=0.1) | Q(similarity_country__gt=0.1) |
+            Q(similarity_quality__gt=0.1) | Q(similarity_code__gt=0.1)
+        ).order_by(
+            '-similarity_title', '-similarity_genre', '-similarity_language',
+            '-similarity_country', '-similarity_quality', '-similarity_code'
+        )

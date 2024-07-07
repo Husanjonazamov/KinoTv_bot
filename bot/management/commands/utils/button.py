@@ -8,6 +8,14 @@ def get_subscription_buttons(not_subscribed):
     return keyboard
 
 
+def delete_message():
+    buttons = InlineKeyboardMarkup(row_width=1)
+    buttons.add(
+        InlineKeyboardButton(text="❌", callback_data="delete")
+    )
+    return buttons
+
+
 
 def create_movie_buttons():
     buttons = InlineKeyboardMarkup(row_width=1)

@@ -23,6 +23,7 @@ async def start_command(message: types.Message, state: FSMContext):
     else:
         keyboard = get_subscription_buttons(not_subscribed)
         await message.answer(texts.CHANNEL_REQUEST, reply_markup=keyboard)
+    await state.finish()
 
 
 @dp.message_handler(commands=['start'], state="*")

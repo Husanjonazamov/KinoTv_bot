@@ -3,7 +3,7 @@ from aiogram.utils.exceptions import BadRequest
 
 CHANNELS = {
     'channel_1': 'webCodersdev',
-    'channel_2': 'testbsadsd',
+    'channel_2': 'kinoTv_hd_filmlar',
 }
 
 async def check_subscriptions(bot, user_id):

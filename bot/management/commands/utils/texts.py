@@ -1,9 +1,7 @@
-
 MAIN_MENU = \
 """
-Asosiy menyu
+<b>Asosiy menyu</b>
 """
-
 
 START_USER = \
 """
@@ -12,14 +10,12 @@ START_USER = \
 </b>
 """
 
-
 DOWNLOAD_MOVIES_HANDLER = \
 """
-<i>
+<b>
 ✍🏻 kino kodini yuboring!
-</i>
+</b>
 """
-
 
 CHANNEL_REQUEST = \
 """
@@ -27,7 +23,6 @@ CHANNEL_REQUEST = \
 Iltimos, quyidagi kanallarga obuna bo'ling 👇
 </b>
 """
-
 
 CHANNEL_CHECK = \
 """
@@ -50,24 +45,22 @@ KOD_IS_NOT = \
 </b>
 """
 
-
 def MOVIES_SEND(**kwargs):
     movies_send = ""
 
-    movies_send += f"🎬<b>Nomi: #{kwargs['title']}\n\n"
-    movies_send += f"📅 Yili: {kwargs['year']}\n"
-    movies_send += f"🌐 Tili: {kwargs['language']}\n"
-    movies_send += f"📀 sifati: {kwargs['quality']}\n"
-    movies_send += f"🏳️ Davlati: {kwargs['country']}\n"
-    movies_send += f"🎭 Janri: {kwargs['genre']}</b>\n"
+    movies_send += f"<b>🎬 Nomi: #{kwargs['title']}</b>\n\n"
+    movies_send += f"<b>📅 Yili: {kwargs['year']}</b>\n"
+    movies_send += f"<b>🌐 Tili: {kwargs['language']}</b>\n"
+    movies_send += f"<b>📀 sifati: {kwargs['quality']}</b>\n"
+    movies_send += f"<b>🏳️ Davlati: {kwargs['country']}</b>\n"
+    movies_send += f"<b>🎭 Janri: {kwargs['genre']}</b>\n\n"
+    movies_send += f"<b>🤖 Bizning bot:  @TVkino_uzbot</b>\n"
+
 
     return movies_send
 
-
-
 def MOVIES_LIST_SEND(title, code):
-    return f"<b>🎬 [{title}] -- kod: ({code}</b>)\n\n"
-
+    return f"<b>🎬 [{title}] -- kod: ({code})</b>\n\n"
 
 MOVIES_SEARCH = \
 """
@@ -75,8 +68,6 @@ MOVIES_SEARCH = \
 ✍🏻 Iltimos, qidiruv so'rovini kiriting:
 </b>
 """
-
-
 
 SEARCH_NOT_FOUND = \
 """
@@ -87,20 +78,20 @@ Afsuski hech narsa topilmadi 😔
 
 CATEGORY_SELECT = \
 """
-Kategoriyani tanlang:
+<b>Kategoriyani tanlang:</b>
 """
 
 CATEGORY_ERROR = \
 """
-Kategoriyalar topilmadi.
+<b>Kategoriyalar topilmadi.</b>
 """
 
 CATEGORY_MOVIES = \
 """
-kategoriyasidagi filmlar:
+<b>kategoriyasidagi filmlar:</b>
 """
 
 CATEGORY_NOT_MOVIES  = \
 """
-kategoriyasida filmlar topilmadi. 😔
+<b>kategoriyasida filmlar topilmadi. 😔</b>
 """

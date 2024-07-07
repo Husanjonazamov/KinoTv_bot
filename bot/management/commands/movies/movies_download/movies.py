@@ -42,7 +42,7 @@ async def movies_task(client, message: types.Message, state: FSMContext):
             country = movie_data.get('country')
             genre = movie_data.get('genre')
 
-
+            
 
             caption_text = texts.MOVIES_SEND(
                 title=title,

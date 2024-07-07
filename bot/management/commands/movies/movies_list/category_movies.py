@@ -16,10 +16,10 @@ async def show_movies_by_category_task(callback_query: types.CallbackQuery, stat
     if movies:
         response = f"{category_title} {texts.CATEGORY_MOVIES}\n\n"
         for index, movie in enumerate(movies, start=1):
-            response += f"{index}. {movie.title} ({movie.year}) - kod: {movie.code}\n\n"
-        await callback_query.message.answer(response)
+            response += f"<b>{index}. {movie.title} ({movie.year}) - kod: {movie.code}</b>\n\n"
+        await callback_query.message.answer(response, reply_markup=button.delete_message())
     else:
-        await callback_query.message.answer(f"{category_title} {texts.CATEGORY_NOT_MOVIES}")
+        await callback_query.message.answer(f"{category_title} {texts.CATEGORY_NOT_MOVIES}", reply_markup=button.delete_message())
 
 
 @dp.callback_query_handler(lambda c: c.data and c.data.startswith('category_'), state='*')

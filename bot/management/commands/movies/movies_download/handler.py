@@ -22,3 +22,4 @@ async def movies_handler_task(message: Message, state: FSMContext):
                 )), state="*", content_types=['text'])
 async def movies_handler(message: Message, state: FSMContext):
     create_task(movies_handler_task(message, state))
+

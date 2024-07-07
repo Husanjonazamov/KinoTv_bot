@@ -52,9 +52,8 @@ INSTALLED_APPS = [
     "crispy_forms",
     "crispy_bootstrap5",
     "django_async_orm",
-
+    'movies',
     "bot",
-    'movies'
 ]
 
 
@@ -129,24 +128,26 @@ ASGI_APPLICATION = 'config.asgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
+# settings.py
 # DATABASES = {
 #     'default': {
 #         'ENGINE': 'django.db.backends.sqlite3',
-#         'NAME': BASE_DIR / 'db.sqlite3',
+#         'NAME': BASE_DIR / "db.sqlite3",
 #     }
 # }
 
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'kinoTv',
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'kinotv',
         'USER': 'postgres',
-        'PASSWORD': '2309',
-        'HOST': 'localhost',  # yoki hostning nomi
+        'PASSWORD': '2309',  # Parolni o'zingiz o'rnatgan parol bilan almashtiring
+        'HOST': 'localhost',  # yoki server manzili
         'PORT': '5432',  # PostgreSQL port raqami
     }
 }
+
 
 
 
