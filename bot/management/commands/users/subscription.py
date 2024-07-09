@@ -6,6 +6,8 @@ CHANNELS = {
     'channel_2': 'kinoTv_hd_filmlar',
 }
 
+
+
 async def check_subscriptions(bot, user_id):
     not_subscribed = []
     for channel in CHANNELS.values():

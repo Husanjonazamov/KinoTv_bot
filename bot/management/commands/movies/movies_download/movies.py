@@ -1,17 +1,25 @@
+import os
+import django
 from aiogram import types, Dispatcher, Bot
 from aiogram.dispatcher import FSMContext
 from aiogram.types import Message
 from asyncio import create_task
 from pyrogram import Client
+from asgiref.sync import sync_to_async
 from bot.management.commands.loader import dp, bot
 from bot.management.commands.movies.movies_download.movies_func import get_video_duration
 from bot.management.commands.services.services import get_movie_by_code
-from bot.management.commands.movies.movies_download.pyrogram_client import app, start_client, stop_client  # Import client and functions from pyrogram_client.py
+from bot.management.commands.movies.movies_download.pyrogram_client import app, start_client, stop_client
 from bot.management.commands.users.subscription import check_subscriptions
 from bot.management.commands.utils import texts
-
 from bot.management.commands.state import Movies
+from bot.management.commands.movies.movies_download.download_count import update_and_get_download_count
 from bot.management.commands.utils import button
+
+
+os.environ.setdefault("DJANGO_SETTINGS_MODULE", "your_project.settings")
+django.setup()
+
 
 
 
@@ -30,7 +38,6 @@ async def movies_task(client, message: types.Message, state: FSMContext):
         if movie_data:
             movie_file_url = movie_data.get('file_id')
 
-            # Check if movie_file_url is valid
             if not movie_file_url:
                 await message.reply("Movie file URL is invalid.")
                 return
@@ -42,7 +49,11 @@ async def movies_task(client, message: types.Message, state: FSMContext):
             country = movie_data.get('country')
             genre = movie_data.get('genre')
 
-            
+            download_count = await update_and_get_download_count(code)
+
+            if download_count is None:
+                await message.reply("Movie not found in the database.")
+                return
 
             caption_text = texts.MOVIES_SEND(
                 title=title,
@@ -50,14 +61,15 @@ async def movies_task(client, message: types.Message, state: FSMContext):
                 language=language,
                 quality=quality,
                 country=country,
-                genre=genre
+                genre=genre,
+                download_count=download_count
             )
 
             await message.answer_video(
-                    video=movie_file_url,
-                    caption=caption_text,
-                    reply_markup=button.create_movie_buttons()
-                )
+                video=movie_file_url,
+                caption=caption_text,
+                reply_markup=button.create_movie_buttons()
+            )
         else:
             await message.answer(texts.KOD_IS_NOT)
 

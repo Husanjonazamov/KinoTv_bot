@@ -10,6 +10,7 @@ from asgiref.sync import sync_to_async
 from bot.management.commands.users.subscription import check_subscriptions
 from bot.management.commands.utils import button, texts
 from movies.models import Movie
+from bot.management.commands.movies.movies_download.download_count import update_and_get_download_count
 
 
 
@@ -19,6 +20,7 @@ async def download_movie_by_code(code):
         return movie
     except Movie.DoesNotExist:
         return None
+
 
 
 
@@ -51,13 +53,22 @@ async def download_movie_task(callback_query: types.CallbackQuery, state: FSMCon
             country = movie_data.get('country')
             genre = movie_data.get('genre')
 
+            download_count = await update_and_get_download_count(code)
+
+            if download_count is None:
+                await callback_query.message.answer("Movie not found in the database.")
+                return
+
+
+
             caption_text = texts.MOVIES_SEND(
                 title=title,
                 year=year,
                 language=language,
                 quality=quality,
                 country=country,
-                genre=genre
+                genre=genre,
+                download_count=download_count
             )
 
             await callback_query.message.answer_video(

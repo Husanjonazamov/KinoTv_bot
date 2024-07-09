@@ -53,7 +53,8 @@ def MOVIES_SEND(**kwargs):
     movies_send += f"<b>🌐 Tili: {kwargs['language']}</b>\n"
     movies_send += f"<b>📀 sifati: {kwargs['quality']}</b>\n"
     movies_send += f"<b>🏳️ Davlati: {kwargs['country']}</b>\n"
-    movies_send += f"<b>🎭 Janri: {kwargs['genre']}</b>\n\n"
+    movies_send += f"<b>🎭 Janri: {kwargs['genre']}</b>\n"
+    movies_send += f"<b>📥 Yuklash: <a href='https://t.me/TVkino_uzbot'>{kwargs['download_count']}</a></b>\n\n"
     movies_send += f"<b>🤖 Bizning bot:  @TVkino_uzbot</b>\n"
 
 

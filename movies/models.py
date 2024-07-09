@@ -19,6 +19,8 @@ class Movie(models.Model):
     quality = models.CharField(max_length=25)
     file_id = models.CharField(max_length=255, blank=True, null=True)
     code = models.CharField(max_length=50, unique=True)
+    download_count = models.IntegerField(default=0)
+
 
     class Meta:
         indexes = [

@@ -12,8 +12,6 @@ from asyncio import create_task
 
 
 
-
-
 async def check_subscriptions_callback(call: types.CallbackQuery, state: FSMContext):
     user_id = call.from_user.id
     not_subscribed = await check_subscriptions(bot, user_id)
@@ -26,6 +24,8 @@ async def check_subscriptions_callback(call: types.CallbackQuery, state: FSMCont
         await call.message.delete()
         keyboard = get_subscription_buttons(not_subscribed)
         await call.message.answer(texts.CHANNEL_ERROR, reply_markup=keyboard)
+
+
 
 
 @dp.callback_query_handler(lambda callbask_query: callbask_query.data.startswith("check_subscriptions"), state="*")
