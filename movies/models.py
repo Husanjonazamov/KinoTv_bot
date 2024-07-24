@@ -54,3 +54,21 @@ class Movie(models.Model):
             '-similarity_title', '-similarity_genre', '-similarity_language',
             '-similarity_country', '-similarity_quality', '-similarity_code'
         )
+
+
+class Episode(models.Model):
+    series = models.ForeignKey(Movie, related_name='episodes', on_delete=models.CASCADE)
+    title = models.CharField(max_length=255)
+    genre = models.CharField(max_length=255)
+    category = models.ForeignKey(Category, on_delete=models.CASCADE)
+    year = models.IntegerField()
+    language = models.CharField(max_length=50)
+    country = models.CharField(max_length=50)
+    quality = models.CharField(max_length=25)
+    file_id = models.CharField(max_length=255, blank=True, null=True)
+    episode_number = models.IntegerField()
+    download_count = models.IntegerField(default=0)
+
+
+    def __str__(self):
+        return f"{self.series.title} - Episode {self.episode_number}"

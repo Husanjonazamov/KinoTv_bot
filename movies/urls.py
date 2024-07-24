@@ -3,12 +3,10 @@
 from . import views
 from django.urls import path, include
 from rest_framework.routers import DefaultRouter
-from .views import MovieDetail, MoviesList, CategoryList
-
+from .views import MovieDetail, get_episodes_by_series_code
 
 
 urlpatterns = [
     path('movies/<str:code>/', MovieDetail.as_view(), name='movie-detail'),
-    path('movies_list/', MoviesList.as_view(), name='movies_list'),
-    path('category_list/', CategoryList.as_view(), name='category_list'),
+    path('series/<str:code>/episodes/', get_episodes_by_series_code, name='get_episodes_by_series_code'),
 ]

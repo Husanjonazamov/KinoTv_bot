@@ -30,10 +30,25 @@ SECRET_KEY = 'django-insecure-p+)gy!oqa1v$0-=61dqiz$y%k_d&&zr9s3wz*#yhke^kmazdej
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-CSRF_TRUSTED_ORIGINS = ["https://production-foodbot.teiqdy.easypanel.host"]
+# CSRF_TRUSTED_ORIGINS = ["https://production-foodbot.teiqdy.easypanel.host"]
 CORS_ALLOW_ALL_ORIGINS = True
 
-ALLOWED_HOSTS = ["*"]
+# settings.py
+
+# settings.py
+
+ALLOWED_HOSTS = [
+    '127.0.0.1',
+    'localhost',
+    'b632-188-113-238-241.ngrok-free.app',  # Replace with your actual Ngrok subdomain
+]
+
+CSRF_TRUSTED_ORIGINS = [
+    'https://b632-188-113-238-241.ngrok-free.app',  # Replace with your actual Ngrok subdomain
+]
+
+# Other settings...
+
 
 # Application definition
 
@@ -47,14 +62,31 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+
+    # install
+
     "rest_framework",
     "corsheaders",
     "crispy_forms",
     "crispy_bootstrap5",
     "django_async_orm",
+
+    # create
+
     'movies',
+    'users',
     "bot",
+    'treyler',
+    'api',
 ]
+
+# Celery settings
+CELERY_BROKER_URL = 'redis://localhost:6379/0'
+CELERY_RESULT_BACKEND = 'redis://localhost:6379/0'
+CELERY_ACCEPT_CONTENT = ['json']
+CELERY_TASK_SERIALIZER = 'json'
+CELERY_RESULT_SERIALIZER = 'json'
+CELERY_TIMEZONE = 'UTC'
 
 
 JAZZMIN_SETTINGS = {
@@ -88,6 +120,7 @@ JAZZMIN_UI_TWEAKS = {
     "theme": "cosmo",
     "dark_mode_theme": None,
 }
+
 
 
 

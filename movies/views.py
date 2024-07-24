@@ -6,7 +6,10 @@ from django.shortcuts import render, get_object_or_404
 from rest_framework import generics
 from rest_framework.response import Response
 from .models import Movie
-from .serializers import MovieSerializer, Category_Serializer
+from api.serializers import MovieSerializer, Category_Serializer
+from django.http import JsonResponse
+
+
 
 
 class MovieDetail(generics.RetrieveAPIView):
@@ -33,18 +36,31 @@ class MovieDetail(generics.RetrieveAPIView):
 
 
 
-
-class MoviesList(generics.ListAPIView):
-    queryset = Movie.objects.all()
-    serializer_class = MovieSerializer
-
-
-
 def movie_detail(request, pk):
     movie = get_object_or_404(Movie, pk=pk)
     return render(request, 'movies/movies_detail.html', {'movie': movie})
 
 
-class CategoryList(generics.ListAPIView):
-    queryset = Category.objects.all()
-    serializer_class = Category_Serializer
+
+
+
+def get_episodes_by_series_code(request, code):
+    try:
+        series = Movie.objects.get(code=code)
+        episodes = series.episodes.all()
+        episodes_data = [
+            {
+                'title': episode.title,
+                'year': series.year,
+                'language': series.language,
+                'quality': series.quality,
+                'country': series.country,
+                'genre': series.genre,
+                'file_id': episode.file_id,
+                'episode_number': episode.episode_number,
+                'download_count': episode.download_count
+            } for episode in episodes
+        ]
+        return JsonResponse({'episodes': episodes_data})
+    except Movie.DoesNotExist:
+        return JsonResponse({'error': 'Series not found'}, status=404)

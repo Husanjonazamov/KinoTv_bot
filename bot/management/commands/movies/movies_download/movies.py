@@ -8,7 +8,7 @@ from pyrogram import Client
 from asgiref.sync import sync_to_async
 from bot.management.commands.loader import dp, bot
 from bot.management.commands.movies.movies_download.movies_func import get_video_duration
-from bot.management.commands.services.services import get_movie_by_code
+from bot.management.commands.services.services import get_movie_by_code, get_episodes_by_series_code
 from bot.management.commands.movies.movies_download.pyrogram_client import app, start_client, stop_client
 from bot.management.commands.users.subscription import check_subscriptions
 from bot.management.commands.utils import texts
@@ -19,8 +19,6 @@ from bot.management.commands.utils import button
 
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "your_project.settings")
 django.setup()
-
-
 
 
 
@@ -70,6 +68,44 @@ async def movies_task(client, message: types.Message, state: FSMContext):
                 caption=caption_text,
                 reply_markup=button.create_movie_buttons()
             )
+
+            episodes_data = await sync_to_async(get_episodes_by_series_code)(code)
+            # if not episodes_data:
+            #     await message.reply("Series not found or no episodes available.")
+            #     return
+
+            for episode in episodes_data:
+                episode_title = episode['title']
+                episode_year = episode['year']
+                episode_language = episode['language']
+                episode_quality = episode['quality']
+                episode_country = episode['country']
+                episode_genre = episode['genre']
+                episode_file_id = episode['file_id']
+                episode_number = episode['episode_number']
+                episode_download_count = await update_and_get_download_count(code)
+
+                if download_count is None:
+                    await message.reply("Movie not found in the database.")
+                    return
+
+                episode = texts.EPISODE(
+                    episode_title=episode_title,
+                    episode_year=episode_year,
+                    episode_language=episode_language,
+                    episode_quality=episode_quality,
+                    episode_country=episode_country,
+                    episode_genre=episode_genre,
+                    episode_number=episode_number,
+                    episode_download_count=episode_download_count
+                )
+
+                await message.answer_video(
+                    video=episode_file_id,
+                    caption=episode,
+                    reply_markup=button.create_movie_buttons()
+                )
+
         else:
             await message.answer(texts.KOD_IS_NOT)
 

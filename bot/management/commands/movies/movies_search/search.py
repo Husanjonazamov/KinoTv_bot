@@ -9,6 +9,7 @@ from asgiref.sync import sync_to_async
 import logging
 
 
+
 async def search_movies_task(message: Message, state: FSMContext):
     query = message.text.strip()
     logging.info(f"Searching for movies with query: {query}")
@@ -28,6 +29,7 @@ async def search_movies_task(message: Message, state: FSMContext):
     else:
         await message.answer(texts.SEARCH_NOT_FOUND)
         await state.set_state(MoviesSearch.waiting_for_query)
+
 
 
 @dp.message_handler(state=MoviesSearch.waiting_for_query, content_types=['text'])
