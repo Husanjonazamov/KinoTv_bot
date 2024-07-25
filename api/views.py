@@ -3,8 +3,15 @@ from django.shortcuts import render, get_object_or_404
 from treyler.models import Treyler
 from rest_framework import generics
 from rest_framework.response import Response
-from .serializers import MovieSerializer, Category_Serializer, TreylerSerializers, EpisodeSerializers
+from .serializers import (
+                          MovieSerializer,
+                          Category_Serializer,
+                          TreylerSerializers,
+                          EpisodeSerializers,
+                          UsersSerializer
+                          )
 
+from users.models import User
 
 
 class MoviesList(generics.ListAPIView):
@@ -28,3 +35,9 @@ class CategoryList(generics.ListAPIView):
 class EpisodeList(generics.ListAPIView):
     queryset = Episode.objects.all()
     serializer_class = EpisodeSerializers
+
+
+
+class UsersList(generics.ListAPIView):
+    queryset = User.objects.all()
+    serializer_class = UsersSerializer
