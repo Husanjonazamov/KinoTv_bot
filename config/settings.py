@@ -6,17 +6,11 @@ env = Env()
 env.read_env()
 
 BOT_TOKEN = env.str("BOT_TOKEN")
-TEST_BOT_TOKEN = "6384385753:AAHv0UeCOMIssdV9ufo9qlaB1gE-ojxJ8K4"
+TEST_BOT_TOKEN = "6809798760:AAFoHbhh_6EqgZAG0cy603-F-RxX2ASIzi8"
 ADMIN = env.str("ADMIN")
 BASE_DOMAIN = "https://give.hostimuz.com"
 BASE_URL = 'http://127.0.0.1:8000/'
 
-ORDER_SEND_CHAT = env.str('ORDER_SEND_CHAT')
-COMMENT_SEND_CHAT = env.str('COMMENT_SEND_ID')
-GOOGLE_MAPS = "https://www.google.com/maps/@{},{},12z?entry=ttu"
-
-KITCHEN_LAN = 40.7128
-KITCHEN_LON = -74.0060
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -37,11 +31,7 @@ CORS_ALLOW_ALL_ORIGINS = True
 
 # settings.py
 
-ALLOWED_HOSTS = [
-    '127.0.0.1',
-    'localhost',
-    'b632-188-113-238-241.ngrok-free.app',  # Replace with your actual Ngrok subdomain
-]
+ALLOWED_HOSTS = ["*"]
 
 CSRF_TRUSTED_ORIGINS = [
     'https://b632-188-113-238-241.ngrok-free.app',  # Replace with your actual Ngrok subdomain
