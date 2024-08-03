@@ -1,20 +1,126 @@
-{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>KinoTV</title>
-    <link rel="icon" href="{% static "image.png" %}">
-    <link rel="stylesheet" href="{% static "css/styles.css" %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <style>
+        body {
+            background-color: #f8f9fa;
+            opacity: 0;
+            animation: fadeIn 1s forwards;
+        }
+
+        @keyframes fadeIn {
+            to {
+                opacity: 1;
+            }
+        }
+
+        .card-container {
+            display: flex;
+            justify-content: space-around;
+            flex-wrap: wrap;
+        }
+
+        .card {
+            width: 300px;
+            border-radius: 15px;
+            margin: 20px;
+            padding: 20px;
+            color: white;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s, box-shadow 0.3s;
+            opacity: 0;
+            transform: translateY(20px);
+            animation: slideUp 0.5s forwards;
+        }
+
+        @keyframes slideUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .card:hover {
+            transform: scale(1.1);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+        }
+
+        .card.green {
+            background: linear-gradient(135deg, #28a745, #218838);
+        }
+
+        .card.blue {
+            background: linear-gradient(135deg, #007bff, #0056b3);
+        }
+
+        .card.orange {
+            background: linear-gradient(135deg, #fd7e14, #e36209);
+        }
+
+        .card.red {
+            background: linear-gradient(135deg, #dc3545, #c82333);
+        }
+
+        .card .card-content {
+            position: relative;
+            z-index: 2;
+        }
+
+        .card .icon-background {
+            position: absolute;
+            top: -10px;
+            right: -10px;
+            font-size: 6rem;
+            color: rgba(255, 255, 255, 0.2);
+            z-index: 1;
+        }
+
+        .card-header h2 {
+            font-size: 2.5rem;
+        }
+
+        .card-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .card-bar {
+            height: 4px;
+            width: 100%;
+            background-color: rgba(255, 255, 255, 0.3);
+            margin: 10px 0;
+            border-radius: 2px;
+            overflow: hidden;
+        }
+
+        .progress {
+            height: 100%;
+            width: 0;
+            background-color: rgba(255, 255, 255, 0.6);
+            animation: progressBar 2s forwards;
+        }
+
+        @keyframes progressBar {
+            to {
+                width: 100%;
+            }
+        }
+    </style>
 </head>
 <body>
     <div class="card-container">
         <div class="card green">
             <div class="card-content">
                 <div class="card-header">
-                    <h2>{{ user_count }}</h2>
-                    <i class="icon">👥</i>
+                    <h2><span class="count" data-count="{{ user_count }}">0</span></h2>
+                    <i class="fas fa-users"></i>
                 </div>
                 <div class="card-bar">
                     <div class="progress"></div>
@@ -24,13 +130,13 @@
                     <span>+5.2% ↑</span>
                 </div>
             </div>
+            <i class="fas fa-users icon-background"></i>
         </div>
         <div class="card blue">
             <div class="card-content">
                 <div class="card-header">
-                    <h2>{{ movies_count }}</h2>
-
-                    <i class="icon">🎬</i>
+                    <h2><span class="count" data-count= >0</span></h2>
+                    <i class="fas fa-film"></i>
                 </div>
                 <div class="card-bar">
                     <div class="progress"></div>
@@ -40,12 +146,13 @@
                     <span>+4.2% ↑</span>
                 </div>
             </div>
+            <i class="fas fa-film icon-background"></i>
         </div>
         <div class="card orange">
             <div class="card-content">
                 <div class="card-header">
-                    <h2>{{ category_count }}</h2>
-                    <i class="icon">🎥</i>
+                    <h2><span class="count" data-count="{{ category_count }}">0</span></h2>
+                    <i class="fas fa-video"></i>
                 </div>
                 <div class="card-bar">
                     <div class="progress"></div>
@@ -55,12 +162,13 @@
                     <span>+1.2% ↑</span>
                 </div>
             </div>
+            <i class="fas fa-video icon-background"></i>
         </div>
         <div class="card red">
             <div class="card-content">
                 <div class="card-header">
-                    <h2>{{ episode_count }}</h2>
-                    <i class="icon">🎞️</i>
+                    <h2><span class="count" data-count="{{ episode_count }}">0</span></h2>
+                    <i class="fas fa-tv"></i>
                 </div>
                 <div class="card-bar">
                     <div class="progress"></div>
@@ -70,7 +178,54 @@
                     <span>+2.2% ↑</span>
                 </div>
             </div>
+            <i class="fas fa-tv icon-background"></i>
         </div>
     </div>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            // Sonlarni sanash funksiyasi
+            const counters = document.querySelectorAll('.count');
+            counters.forEach(counter => {
+                counter.innerText = '0';
+                const updateCounter = () => {
+                    const target = +counter.getAttribute('data-count');
+                    const count = +counter.innerText;
+                    const increment = target / 400;  // Incrementni kamaytirdik
+                    const delay = 20; // setTimeout vaqtini oshirdik
+
+                    if (count < target) {
+                        counter.innerText = Math.ceil(count + increment);
+                        setTimeout(updateCounter, delay);
+                    } else {
+                        counter.innerText = target;
+                    }
+                };
+                updateCounter();
+            });
+
+            // Hover qilinganda raqamlarni qaytadan sanash
+            const cards = document.querySelectorAll('.card');
+            cards.forEach(card => {
+                card.addEventListener('mouseenter', () => {
+                    const counter = card.querySelector('.count');
+                    counter.innerText = '0';
+                    const target = +counter.getAttribute('data-count');
+                    const updateCounter = () => {
+                        const count = +counter.innerText;
+                        const increment = target / 400;  // Incrementni kamaytirdik
+                        const delay = 20; // setTimeout vaqtini oshirdik
+
+                        if (count < target) {
+                            counter.innerText = Math.ceil(count + increment);
+                            setTimeout(updateCounter, delay);
+                        } else {
+                            counter.innerText = target;
+                        }
+                    };
+                    updateCounter();
+                });
+            });
+        });
+    </script>
 </body>
 </html>

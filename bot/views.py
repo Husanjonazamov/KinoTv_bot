@@ -19,4 +19,4 @@ def home(request):
     'treyler_count': treyler_count,
     'episode_count': episode_count
   }
-  return render(request, "base.html", context)
+  return render(request, "dashboard/index.html", context)

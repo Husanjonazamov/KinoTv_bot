@@ -13,11 +13,7 @@ from asyncio import create_task
 from aiogram.dispatcher import FSMContext
 
 
-
-
 ADMIN_ID = 6415392394
-
-
 
 
 async def send_message_to_all_task(message: types.Message, state: FSMContext):
