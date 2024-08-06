@@ -69,3 +69,21 @@ do = InlineKeyboardMarkup(
         ],
     ],
 )
+
+
+
+TREYLER_SEND = InlineKeyboardMarkup(
+    inline_keyboard=[
+        [
+            InlineKeyboardButton(text='Yuborish 🚀', callback_data='treyler:')
+        ]
+    ]
+)
+
+
+def treyler_send(title):
+    treyler_button = InlineKeyboardMarkup(row_width=1)
+    treyler_button.add(
+        InlineKeyboardButton(text='Yuborish 🚀', callback_data=f'treyler:{title}')
+    )
+    return treyler_button

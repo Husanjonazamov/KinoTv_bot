@@ -128,5 +128,15 @@ CATEGORY_NOT_MOVIES  = \
 
 NOT_ADMIN = \
 """
-Siz admin emasiz !
+<b>Siz admin emasiz !</b>
+"""
+
+TREYLER_SUCCES = \
+"""
+<b>Treylerni tanlang</b>
+"""
+
+TREYLER_NOT_FOUND = \
+"""
+<b>Treyler topilmadi</b>
 """

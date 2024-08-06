@@ -116,3 +116,4 @@ async def handle_message(message: Message, state: FSMContext):
         await message.answer(texts.MAIN_MENU, reply_markup=button.MAIN_MENU)
     else:
         await create_task(movies_task(app, message, state))
+

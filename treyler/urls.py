@@ -1,10 +1,10 @@
-from django.urls import path
-
-from .views import AddTreylerView
-
-
-
-
-urlpatterns = [
-    path('trey/', AddTreylerView.as_view(), name='add')
-]
+# from django.urls import path
+#
+# from .views import TreylerDetail
+#
+#
+#
+# urlpatterns = [
+#     path('treyler/', TreylerDetail.as_view(), name='add'),
+#
+# ]
